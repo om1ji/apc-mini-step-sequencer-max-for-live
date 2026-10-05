@@ -2,3 +2,4 @@ __pycache__/
 .ruff_cache/
 docs/diagrams/*.visual-check.*
 .DS_Store
+dist/

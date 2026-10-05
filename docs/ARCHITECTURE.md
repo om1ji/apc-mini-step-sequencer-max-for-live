@@ -42,6 +42,14 @@ docs/diagrams/       archify source and interactive diagram
 
 `build.py` copies the top-level settings of Live's empty *Max MIDI Effect* template, replaces its boxes and patch cords with the ones described in the script, and writes the `.amxd` container: `ampf` header, device type `mmmm` (MIDI effect), an empty `meta` chunk and a `ptch` chunk with the patcher JSON. The template path is `TEMPLATE` at the top of the script.
 
+By default the device goes straight into the User Library; `--out` builds it elsewhere, which is how release archives are made:
+
+```bash
+python3 build.py --out "dist/APC Seq"
+```
+
+The generated file contains no absolute paths: Max finds the scripts in the device's own folder.
+
 ## Testing
 
 ```bash

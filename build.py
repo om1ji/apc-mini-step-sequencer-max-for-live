@@ -11,6 +11,7 @@
     apcseq.js → подсветка через Control Surface MaxForLive (send_midi)
 """
 
+import argparse
 import json
 import shutil
 import struct
@@ -167,7 +168,7 @@ def read_template_patcher():
     return json.loads(text)
 
 
-def build():
+def build(out_dir):
     doc = read_template_patcher()
     patcher = doc["patcher"]
     patcher["boxes"] = boxes
@@ -179,10 +180,9 @@ def build():
         "parameterbanks": {},
         "inherited_shortname": 1,
     }
-    patcher["dependency_cache"] = [
-        {"name": name, "bootpath": str(OUT_DIR), "type": "TEXT", "implicit": 1}
-        for name in SCRIPTS
-    ]
+    # Скрипты Max находит в папке устройства; абсолютные пути в файл не пишем,
+    # чтобы собранное устройство можно было раздавать.
+    patcher["dependency_cache"] = []
 
     ptch = json.dumps(doc, indent="\t", ensure_ascii=False).encode("utf-8") + b"\n\x00"
     # Контейнер .amxd: 'ampf' + тип устройства ('mmmm' — MIDI-эффект) + 'meta' + 'ptch' с JSON.
@@ -198,12 +198,19 @@ def build():
         + ptch
     )
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    (OUT_DIR / "APC Seq.amxd").write_bytes(data)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "APC Seq.amxd").write_bytes(data)
     for name in SCRIPTS:
-        shutil.copy(HERE / name, OUT_DIR / name)
-    print(f"Собрано: {OUT_DIR / 'APC Seq.amxd'}")
+        shutil.copy(HERE / name, out_dir / name)
+    print(f"Собрано: {out_dir / 'APC Seq.amxd'}")
 
 
 if __name__ == "__main__":
-    build()
+    parser = argparse.ArgumentParser(description="Собрать APC Seq.amxd")
+    parser.add_argument(
+        "--out",
+        type=Path,
+        default=OUT_DIR,
+        help="папка для устройства (по умолчанию — User Library Live)",
+    )
+    build(parser.parse_args().out)

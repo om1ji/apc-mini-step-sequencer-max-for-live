@@ -21,20 +21,23 @@ Prefer a standalone plugin that plays its own samples? See [apc-mini-step-sequen
 
 - AKAI APC mini mk2.
 - Ableton Live 12 Suite, or Live 12 Standard with Max for Live. Tested with Live 12.0.5 on macOS.
-- Python 3, to build the device from this repository. There is no ready-made download yet.
 
 ## Install
 
-1. Download or clone this repository.
-2. In a terminal, from the repository folder, run:
+1. Download `APC-Seq-0.1.0-Max-for-Live.zip` from the [latest release](https://github.com/om1ji/apc-mini-step-sequencer-max-for-live/releases/latest) and unzip it.
+2. Copy the whole `APC Seq` folder to `~/Music/Ableton/User Library/Presets/MIDI Effects/Max MIDI Effect/`. Keep the three files together: the device loads its scripts from its own folder.
 
-   ```bash
-   python3 build.py
-   ```
+The device appears in Live's browser under **User Library → MIDI Effects → Max MIDI Effect → APC Seq**.
 
-   The device appears in Live's browser under **User Library → MIDI Effects → Max MIDI Effect → APC Seq**.
+### Building from source
 
-The build script expects Live at `/Applications/Ableton Live 12 Suite.app`. If yours is installed elsewhere or is a different edition, change `TEMPLATE` at the top of [`build.py`](build.py).
+With Python 3, from the repository folder:
+
+```bash
+python3 build.py
+```
+
+It builds the device straight into the User Library folder above. The script expects Live at `/Applications/Ableton Live 12 Suite.app`; for another edition or location, change `TEMPLATE` at the top of [`build.py`](build.py).
 
 ## Set up Live
 
