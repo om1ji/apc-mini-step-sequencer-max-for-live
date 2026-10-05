@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "APC Seq for Max for Live",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1100,
+      560
+    ]
+  },
+  "components": [
+    {
+      "id": "apc",
+      "type": "external",
+      "label": "APC mini mk2",
+      "sublabel": "USB MIDI",
+      "pos": [
+        40,
+        280
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "trackin",
+      "type": "cloud",
+      "label": "Track input",
+      "sublabel": "Monitor In",
+      "pos": [
+        250,
+        280
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "js",
+      "type": "backend",
+      "label": "apcseq.js",
+      "sublabel": "pattern, LEDs",
+      "pos": [
+        480,
+        280
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "clock",
+      "type": "backend",
+      "label": "Step clock",
+      "sublabel": "metro, transport, coll",
+      "pos": [
+        710,
+        280
+      ],
+      "size": [
+        160,
+        60
+      ],
+      "tag": "scheduler thread"
+    },
+    {
+      "id": "drums",
+      "type": "external",
+      "label": "Drum Rack",
+      "sublabel": "C1 to G1",
+      "pos": [
+        940,
+        280
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Grid",
+      "sublabel": "jsui in device",
+      "pos": [
+        480,
+        130
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "surface",
+      "type": "cloud",
+      "label": "MaxForLive",
+      "sublabel": "control surface",
+      "pos": [
+        250,
+        430
+      ],
+      "size": [
+        140,
+        60
+      ]
+    },
+    {
+      "id": "liveapi",
+      "type": "cloud",
+      "label": "Live API",
+      "sublabel": "mixer volume",
+      "pos": [
+        710,
+        430
+      ],
+      "size": [
+        160,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "APC Seq.amxd",
+      "wraps": [
+        "js",
+        "clock",
+        "ui"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "controls",
+      "from": "apc",
+      "to": "trackin",
+      "label": "pads, faders",
+      "variant": "emphasis"
+    },
+    {
+      "id": "midiin",
+      "from": "trackin",
+      "to": "js",
+      "label": "midiin",
+      "variant": "emphasis"
+    },
+    {
+      "id": "rows",
+      "from": "js",
+      "to": "clock",
+      "label": "pattern rows"
+    },
+    {
+      "id": "notes",
+      "from": "clock",
+      "to": "drums",
+      "label": "noteout",
+      "variant": "emphasis"
+    },
+    {
+      "id": "clicks",
+      "from": "ui",
+      "to": "js",
+      "label": "clicks",
+      "labelAt": [
+        550,
+        235
+      ]
+    },
+    {
+      "id": "sendmidi",
+      "from": "js",
+      "to": "surface",
+      "label": "send_midi",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "right"
+    },
+    {
+      "id": "leds",
+      "from": "surface",
+      "to": "apc",
+      "label": "LED colors",
+      "variant": "dashed",
+      "fromSide": "left",
+      "toSide": "bottom"
+    },
+    {
+      "id": "volumes",
+      "from": "js",
+      "to": "liveapi",
+      "label": "fader values"
+    },
+    {
+      "id": "chainvol",
+      "from": "liveapi",
+      "to": "drums",
+      "label": "pad volume"
+    }
+  ]
+}
